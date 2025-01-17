@@ -15,6 +15,7 @@ public class Main {
         ArrayList<String> cartNames = new ArrayList<>();
         ArrayList<Integer> cartQuantities = new ArrayList<>();
         ArrayList<Double> cartPrices = new ArrayList<>();
+        // Initialize products
         electronicsNames.add("Laptop");
         electronicsPrices.add(800.00);
         electronicsQuantities.add(10);
@@ -42,8 +43,10 @@ public class Main {
         booksNames.add("Design Patterns");
         booksPrices.add(35.00);
         booksQuantities.add(0);
+
         boolean isUserLoggedIn = false;
         boolean isAdmin = false;
+
         while (true) {
             System.out.println("Welcome to the eCommerce App!");
             System.out.println("1. Login as Admin");
@@ -79,7 +82,7 @@ public class Main {
                 }
             } else if (loginChoice == 3) {
                 System.out.println("Exiting the program.");
-                return;
+                return; // Exit the program
             } else {
                 System.out.println("Invalid option. Please try again.");
             }
@@ -96,15 +99,147 @@ public class Main {
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
             if (choice == 1) {
-                browseCategories(scanner, electronicsNames, electronicsPrices, electronicsQuantities,
-                        clothingNames, clothingPrices, clothingQuantities,
-                        booksNames, booksPrices, booksQuantities, cartNames, cartQuantities, cartPrices);
+                System.out.println("\nSelect a Category:");
+                System.out.println("1. Electronics");
+                System.out.println("2. Clothing");
+                System.out.println("3. Books");
+                System.out.print("Choose a category: ");
+                int categoryChoice = scanner.nextInt();
+                if (categoryChoice == 1) {
+                    System.out.println("\nAvailable Electronics:");
+                    for (int i = 0; i < electronicsNames.size(); i++) {
+                        String availability = (electronicsQuantities.get(i) > 0) ? "In Stock" : "Out of Stock";
+                        System.out.println((i + 1) + ". " + electronicsNames.get(i) + " - $" + electronicsPrices.get(i) + " - " + availability);
+                    }
+                    System.out.print("Select a product to add to cart: ");
+                    int productChoice = scanner.nextInt();
+                    if (productChoice >= 1 && productChoice <= electronicsNames.size()) {
+                        int productIndex = productChoice - 1;
+                        if (electronicsQuantities.get(productIndex) == 0) {
+                            System.out.println(electronicsNames.get(productIndex) + " is out of stock.");
+                        } else {
+                            System.out.print("Enter quantity to add to cart: ");
+                            int quantity = scanner.nextInt();
+                            if (quantity <= electronicsQuantities.get(productIndex)) {
+                                electronicsQuantities.set(productIndex, electronicsQuantities.get(productIndex) - quantity);
+                                cartNames.add(electronicsNames.get(productIndex));
+                                cartQuantities.add(quantity);
+                                cartPrices.add(electronicsPrices.get(productIndex) * quantity);
+                                System.out.println("Added " + quantity + " of " + electronicsNames.get(productIndex) + " to your cart.");
+                            } else {
+                                System.out.println("Not enough stock available.");
+                            }
+                        }
+                    } else {
+                        System.out.println("Invalid product choice.");
+                    }
+                } else if (categoryChoice == 2) {
+                    // Similar code for clothing
+                    System.out.println("\nAvailable Clothing:");
+                    for (int i = 0; i < clothingNames.size(); i++) {
+                        String availability = (clothingQuantities.get(i) > 0) ? "In Stock" : "Out of Stock";
+                        System.out.println((i + 1) + ". " + clothingNames.get(i) + " - $" + clothingPrices.get(i) + " - " + availability);
+                    }
+                    System.out.print("Select a product to add to cart: ");
+                    int productChoice = scanner.nextInt();
+                    if (productChoice >= 1 && productChoice <= clothingNames.size()) {
+                        int productIndex = productChoice - 1;
+                        if (clothingQuantities.get(productIndex) == 0) {
+                            System.out.println(clothingNames.get(productIndex) + " is out of stock.");
+                        } else {
+                            System.out.print("Enter quantity to add to cart: ");
+                            int quantity = scanner.nextInt();
+                            if (quantity <= clothingQuantities.get(productIndex)) {
+                                clothingQuantities.set(productIndex, clothingQuantities.get(productIndex) - quantity);
+                                cartNames.add(clothingNames.get(productIndex));
+                                cartQuantities.add(quantity);
+                                cartPrices.add(clothingPrices.get(productIndex) * quantity);
+                                System.out.println("Added " + quantity + " of " + clothingNames.get(productIndex) + " to your cart.");
+                            } else {
+                                System.out.println("Not enough stock available.");
+                            }
+                        }
+                    } else {
+                        System.out.println("Invalid product choice.");
+                    }
+                } else if (categoryChoice == 3) {
+                    // Similar code for books
+                    System.out.println("\nAvailable Books:");
+                    for (int i = 0; i < booksNames.size(); i++) {
+                        String availability = (booksQuantities.get(i) > 0) ? "In Stock" : "Out of Stock";
+                        System.out.println((i + 1) + ". " + booksNames.get(i) + " - $" + booksPrices.get(i) + " - " + availability);
+                    }
+                    System.out.print("Select a product to add to cart: ");
+                    int productChoice = scanner.nextInt();
+                    if (productChoice >= 1 && productChoice <= booksNames.size()) {
+                        int productIndex = productChoice - 1;
+                        if (booksQuantities.get(productIndex) == 0) {
+                            System.out.println(booksNames.get(productIndex) + " is out of stock.");
+                        } else {
+                            System.out.print("Enter quantity to add to cart: ");
+                            int quantity = scanner.nextInt();
+                            if (quantity <= booksQuantities.get(productIndex)) {
+                                booksQuantities.set(productIndex, booksQuantities.get(productIndex) - quantity);
+                                cartNames.add(booksNames.get(productIndex));
+                                cartQuantities.add(quantity);
+                                cartPrices.add(booksPrices.get(productIndex) * quantity);
+                                System.out.println("Added " + quantity + " of " + booksNames.get(productIndex) + " to your cart.");
+                            } else {
+                                System.out.println("Not enough stock available.");
+                            }
+                        }
+                    } else {
+                        System.out.println("Invalid product choice.");
+                    }
+                } else {
+                    System.out.println("Invalid category. Please try again.");
+                }
             } else if (choice == 2) {
-                displayCart(cartNames, cartQuantities, cartPrices);
+                if (cartNames.isEmpty()) {
+                    System.out.println("Your cart is empty.");
+                } else {
+                    System.out.println("\nYour Cart:");
+                    for (int i = 0; i < cartNames.size(); i++) {
+                        System.out.println(cartNames.get(i) + " - Quantity: " + cartQuantities.get(i) + " - Total: $" + cartPrices.get(i));
+                    }
+                }
             } else if (choice == 3) {
-                checkout(cartNames, cartQuantities, cartPrices);
+                double total = 0;
+                for (int i = 0; i < cartPrices.size(); i++) {
+                    total += cartPrices.get(i);
+                }
+                System.out.println("\nInvoice:");
+                if (cartNames.isEmpty()) {
+                    System.out.println("Your cart is empty.");
+                } else {
+                    for (int i = 0; i < cartNames.size(); i++) {
+                        System.out.println(cartNames.get(i) + " - Quantity: " + cartQuantities.get(i) + " - Total: $" + cartPrices.get(i));
+                    }
+                }
+                System.out.println("Total Price: $" + total);
+                System.out.print("Confirm order? (y/n): ");
+                String confirmation = scanner.nextLine();
+                if (confirmation.equalsIgnoreCase("y")) {
+                    System.out.println("Thank you for your purchase!");
+                } else {
+                    System.out.println("Order cancelled.");
+                }
             } else if (choice == 4 && isAdmin) {
-                viewOrders(cartNames, cartQuantities, cartPrices);
+                System.out.println("\nOrders:");
+                if (cartNames.isEmpty()) {
+                    System.out.println("No orders to display.");
+                } else {
+                    for (int i = 0; i < cartNames.size(); i++) {
+                        System.out.println(cartNames.get(i) + " - Quantity: " + cartQuantities.get(i) + " - Total: $" + cartPrices.get(i));
+                    }
+                }
+                System.out.println("Mark orders as shipped? (y/n): ");
+                String confirmation = scanner.nextLine();
+                if (confirmation.equalsIgnoreCase("y")) {
+                    System.out.println("Order marked as shipped.");
+                } else {
+                    System.out.println("Order remains unshipped.");
+                }
             } else if (choice == 5) {
                 System.out.println("Logging out...");
                 isUserLoggedIn = false;
@@ -114,95 +249,5 @@ public class Main {
             }
         }
         scanner.close();
-    }
-    public static void browseCategories(Scanner scanner,
-                                        ArrayList<String> electronicsNames, ArrayList<Double> electronicsPrices, ArrayList<Integer> electronicsQuantities,
-                                        ArrayList<String> clothingNames, ArrayList<Double> clothingPrices, ArrayList<Integer> clothingQuantities,
-                                        ArrayList<String> booksNames, ArrayList<Double> booksPrices, ArrayList<Integer> booksQuantities,
-                                        ArrayList<String> cartNames, ArrayList<Integer> cartQuantities, ArrayList<Double> cartPrices) {
-        System.out.println("\nSelect a Category:");
-        System.out.println("1. Electronics");
-        System.out.println("2. Clothing");
-        System.out.println("3. Books");
-        System.out.print("Choose a category: ");
-        int categoryChoice = scanner.nextInt();
-        if (categoryChoice == 1) {
-            browseProducts(scanner, electronicsNames, electronicsPrices, electronicsQuantities, cartNames, cartQuantities, cartPrices);
-        } else if (categoryChoice == 2) {
-            browseProducts(scanner, clothingNames, clothingPrices, clothingQuantities, cartNames, cartQuantities, cartPrices);
-        } else if (categoryChoice == 3) {
-            browseProducts(scanner, booksNames, booksPrices, booksQuantities, cartNames, cartQuantities, cartPrices);
-        } else {
-            System.out.println("Invalid category. Please try again.");
-        }
-    }
-    public static void browseProducts(Scanner scanner, ArrayList<String> names, ArrayList<Double> prices, ArrayList<Integer> quantities,
-                                      ArrayList<String> cartNames, ArrayList<Integer> cartQuantities, ArrayList<Double> cartPrices) {
-        System.out.println("\nAvailable Products:");
-        for (int i = 0; i < names.size(); i++) {
-            String availability = (quantities.get(i) > 0) ? "In Stock" : "Out of Stock";
-            System.out.println((i + 1) + ". " + names.get(i) + " - $" + prices.get(i) + " - " + availability);
-        }
-        System.out.print("Select a product to add to cart: ");
-        int productChoice = scanner.nextInt();
-        if (productChoice >= 1 && productChoice <= names.size()) {
-            int productIndex = productChoice - 1;
-            if (quantities.get(productIndex) == 0) {
-                System.out.println(names.get(productIndex) + " is out of stock.");
-            } else {
-                System.out.print("Enter quantity to add to cart: ");
-                int quantity = scanner.nextInt();
-                if (quantity <= quantities.get(productIndex)) {
-                    quantities.set(productIndex, quantities.get(productIndex) - quantity);
-                    cartNames.add(names.get(productIndex));
-                    cartQuantities.add(quantity);
-                    cartPrices.add(prices.get(productIndex) * quantity);
-                    System.out.println("Added " + quantity + " of " + names.get(productIndex) + " to your cart.");
-                } else {
-                    System.out.println("Not enough stock available.");
-                }
-            }
-        } else {
-            System.out.println("Invalid product choice.");
-        }
-    }
-    public static void displayCart(ArrayList<String> cartNames, ArrayList<Integer> cartQuantities, ArrayList<Double> cartPrices) {
-        if (cartNames.isEmpty()) {
-            System.out.println("Your cart is empty.");
-        } else {
-            System.out.println("\nYour Cart:");
-            for (int i = 0; i < cartNames.size(); i++) {
-                System.out.println(cartNames.get(i) + " - Quantity: " + cartQuantities.get(i) + " - Total: $" + cartPrices.get(i));
-            }
-        }
-    }
-    public static void checkout(ArrayList<String> cartNames, ArrayList<Integer> cartQuantities, ArrayList<Double> cartPrices) {
-        double total = 0;
-        for (int i = 0; i < cartPrices.size(); i++) {
-            total += cartPrices.get(i);
-        }
-        System.out.println("\nInvoice:");
-        displayCart(cartNames, cartQuantities, cartPrices);
-        System.out.println("Total Price: $" + total);
-        System.out.print("Confirm order? (y/n): ");
-        Scanner scanner = new Scanner(System.in);
-        String confirmation = scanner.nextLine();
-        if (confirmation.equalsIgnoreCase("y")) {
-            System.out.println("Thank you for your purchase!");
-        } else {
-            System.out.println("Order cancelled.");
-        }
-    }
-    public static void viewOrders(ArrayList<String> cartNames, ArrayList<Integer> cartQuantities, ArrayList<Double> cartPrices) {
-        System.out.println("\nOrders:");
-        displayCart(cartNames, cartQuantities, cartPrices);
-        System.out.println("Mark orders as shipped? (y/n): ");
-        Scanner scanner = new Scanner(System.in);
-        String confirmation = scanner.nextLine();
-        if (confirmation.equalsIgnoreCase("y")) {
-            System.out.println("Order marked as shipped.");
-        } else {
-            System.out.println("Order remains unshipped.");
-        }
     }
 }
